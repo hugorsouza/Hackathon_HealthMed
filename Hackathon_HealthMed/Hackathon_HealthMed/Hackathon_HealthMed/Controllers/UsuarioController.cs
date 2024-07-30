@@ -8,6 +8,12 @@ namespace Hackathon_HealthMed.Controllers
     [Route("api/[controller]")]
     public class UsuarioController : Controller
     {
+        private readonly ILogger<UsuarioController> _logger;
+        public UsuarioController(ILogger<UsuarioController> logger)
+        {
+            _logger = logger;
+        }
+
         // Endpoint para autenticação (login)
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
@@ -15,13 +21,15 @@ namespace Hackathon_HealthMed.Controllers
             try
             {
                 // Chama o serviço de autenticação com as credenciais do request
-                var medico = await _medicoService.AutenticarAsync(request.Email, request.Senha);
-                if (medico != null)
-                {
-                    _logger.LogInformation("Login bem-sucedido.");
-                    return Ok(new { token = "BearerTokenGerado" }); // Implementar a geração do token aqui.
-                }
-                return Unauthorized(new { success = false, message = "Credenciais inválidas." });
+                //var medico = await _medicoService.AutenticarAsync(request.Email, request.Senha);
+                //if (medico != null)
+                //{
+                //    _logger.LogInformation("Login bem-sucedido.");
+                //    return Ok(new { token = "BearerTokenGerado" }); // Implementar a geração do token aqui.
+                //}
+                //return Unauthorized(new { success = false, message = "Credenciais inválidas." });
+
+                return Ok();
             }
             catch (Exception ex)
             {

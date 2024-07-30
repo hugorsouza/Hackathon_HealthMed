@@ -41,14 +41,14 @@ namespace Hackathon_HealthMed.Controllers
             }
         }
 
-        
+
         // Endpoint para abrir a agenda do médico e disponibilizar horários
         [HttpPost("AbrirAgenda")]
         public async Task<IActionResult> AbrirAgenda([FromBody] LoginRequest request)
         {
             try
             {
-               
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -64,7 +64,7 @@ namespace Hackathon_HealthMed.Controllers
         {
             try
             {
-
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -72,9 +72,6 @@ namespace Hackathon_HealthMed.Controllers
                 return StatusCode(500, "Erro interno do servidor.");
             }
         }
-
-
-
-       
+    }       
 }
 

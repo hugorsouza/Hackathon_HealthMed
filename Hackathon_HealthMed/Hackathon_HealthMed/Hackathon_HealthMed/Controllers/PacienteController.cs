@@ -1,4 +1,5 @@
-﻿using HackathonHealthMed.Application.Request;
+﻿using HackathonHealthMed.Application;
+using HackathonHealthMed.Application.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_HealthMed.Controllers
@@ -7,14 +8,20 @@ namespace Hackathon_HealthMed.Controllers
     [Route("api/[controller]")]
     public class PacienteController : Controller
     {
+        private readonly ILogger<MedicoController> _logger;
+        public PacienteController(ILogger<MedicoController> logger)
+        {
+            _logger = logger;
+        }
+
 
         // Endpoint para abrir a agenda do médico e disponibilizar horários
         [HttpPost("Cadastrar")]
-        public async Task<IActionResult> ConsultarMedicosDisponiveis([FromBody] LoginRequest request)
+        public async Task<IActionResult> Cadastrar([FromBody] LoginRequest request)
         {
             try
             {
-
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -30,7 +37,7 @@ namespace Hackathon_HealthMed.Controllers
         {
             try
             {
-
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -48,7 +55,7 @@ namespace Hackathon_HealthMed.Controllers
         {
             try
             {
-
+                return Ok();
             }
             catch (Exception ex)
             {
