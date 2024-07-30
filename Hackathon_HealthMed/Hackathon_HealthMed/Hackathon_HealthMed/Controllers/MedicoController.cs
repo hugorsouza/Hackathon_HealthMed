@@ -22,6 +22,7 @@ namespace Hackathon_HealthMed.Controllers
         [HttpPost("cadastrar")]
         public async Task<IActionResult> Cadastrar([FromBody] CadastrarMedicoRequest request)
         {
+
             try
             {
                 // Chama o serviço para cadastrar o médico com os dados do request
