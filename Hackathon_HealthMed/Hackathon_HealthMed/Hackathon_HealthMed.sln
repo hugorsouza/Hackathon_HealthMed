@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01-Presentation", "01-Prese
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02-Applicattion", "02-Applicattion", "{CF02180A-50C8-4B5C-BFAF-3BE9B25642BE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-Domian", "03-Domian", "{141E1BF0-B98A-4A40-A163-22C0BBB544AA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03-Domain", "03-Domain", "{141E1BF0-B98A-4A40-A163-22C0BBB544AA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04-Infra", "04-Infra", "{836308AC-2A3F-447C-9BC4-132A7CBA6027}"
 EndProject
@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05-Test", "05-Test", "{50E4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackathonHealthMed.Application", "HackathonHealthMed.Application\HackathonHealthMed.Application.csproj", "{42933339-1599-41FA-B297-A5ABFB7FF9F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackathonHealthMed.Domian", "HackathonHealthMed.Domian\HackathonHealthMed.Domian.csproj", "{F114FCC6-459D-4006-988C-CB694B918B58}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackathonHealthMed.Domain", "HackathonHealthMed.Domian\HackathonHealthMed.Domain.csproj", "{F114FCC6-459D-4006-988C-CB694B918B58}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HackathonHealthMed.Infra", "HackathonHealthMed.Infra\HackathonHealthMed.Infra.csproj", "{AEB58F8A-431E-41FE-B99B-67AF4E75CCBA}"
 EndProject
