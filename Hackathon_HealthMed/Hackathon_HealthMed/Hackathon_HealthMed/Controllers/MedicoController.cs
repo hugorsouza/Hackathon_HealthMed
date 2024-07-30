@@ -22,6 +22,7 @@ namespace Hackathon_HealthMed.Controllers
         [HttpPost("cadastrar")]
         public async Task<IActionResult> Cadastrar([FromBody] CadastrarMedicoRequest request)
         {
+
             try
             {
                 // Chama o serviço para cadastrar o médico com os dados do request
@@ -40,20 +41,14 @@ namespace Hackathon_HealthMed.Controllers
             }
         }
 
-        // Endpoint para autenticação (login)
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+        
+        // Endpoint para abrir a agenda do médico e disponibilizar horários
+        [HttpPost("AbrirAgenda")]
+        public async Task<IActionResult> AbrirAgenda([FromBody] LoginRequest request)
         {
             try
             {
-                // Chama o serviço de autenticação com as credenciais do request
-                var medico = await _medicoService.AutenticarAsync(request.Email, request.Senha);
-                if (medico != null)
-                {
-                    _logger.LogInformation("Login bem-sucedido.");
-                    return Ok(new { token = "BearerTokenGerado" }); // Implementar a geração do token aqui.
-                }
-                return Unauthorized(new { success = false, message = "Credenciais inválidas." });
+               
             }
             catch (Exception ex)
             {
@@ -61,6 +56,25 @@ namespace Hackathon_HealthMed.Controllers
                 return StatusCode(500, "Erro interno do servidor.");
             }
         }
-    }
+
+
+        // Endpoint para abrir o médico visualizar a agenda do dia selecionado
+        [HttpGet("VisualizarAgenda")]
+        public async Task<IActionResult> VisualizarAgenda([FromBody] LoginRequest request)
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao tentar login.");
+                return StatusCode(500, "Erro interno do servidor.");
+            }
+        }
+
+
+
+       
 }
 
