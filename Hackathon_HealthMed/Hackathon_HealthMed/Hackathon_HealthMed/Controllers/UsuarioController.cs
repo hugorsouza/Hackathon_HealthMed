@@ -1,6 +1,7 @@
 ﻿using HackathonHealthMed.Application.Request;
 using HackathonHealthMed.Application;
 using Microsoft.AspNetCore.Mvc;
+using HackathonHealthMed.Application.Interfaces;
 
 namespace Hackathon_HealthMed.Controllers
 {
@@ -9,9 +10,11 @@ namespace Hackathon_HealthMed.Controllers
     public class UsuarioController : Controller
     {
         private readonly ILogger<UsuarioController> _logger;
-        public UsuarioController(ILogger<UsuarioController> logger)
+        private readonly ILoginService _loginService;
+        public UsuarioController(ILogger<UsuarioController> logger, ILoginService loginService)
         {
             _logger = logger;
+            _loginService = loginService;
         }
 
         // Endpoint para autenticação (login)
@@ -20,16 +23,16 @@ namespace Hackathon_HealthMed.Controllers
         {
             try
             {
-                // Chama o serviço de autenticação com as credenciais do request
-                //var medico = await _medicoService.AutenticarAsync(request.Email, request.Senha);
-                //if (medico != null)
-                //{
-                //    _logger.LogInformation("Login bem-sucedido.");
-                //    return Ok(new { token = "BearerTokenGerado" }); // Implementar a geração do token aqui.
-                //}
-                //return Unauthorized(new { success = false, message = "Credenciais inválidas." });
+               
+               var token = await _loginService.AutenticarAsync(request.Email, request.Senha);
+                if (token != null)
+                {
+                    _logger.LogInformation("Login bem-sucedido.");
+                    return Ok(@$"Token: {token}"); // Implementar a geração do token aqui.
+                }
+                return Unauthorized(new { success = false, message = "Credenciais inválidas." });
 
-                return Ok();
+                
             }
             catch (Exception ex)
             {

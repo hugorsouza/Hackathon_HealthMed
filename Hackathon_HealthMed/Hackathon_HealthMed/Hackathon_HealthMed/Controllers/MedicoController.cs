@@ -2,6 +2,7 @@
 using HackathonHealthMed.Application.Interfaces;
 using HackathonHealthMed.Application.Request;
 using HackathonHealthMed.Domain.Entities;
+using HackathonHealthMed.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_HealthMed.Controllers
@@ -12,11 +13,13 @@ namespace Hackathon_HealthMed.Controllers
     {
         private readonly IMedicoService _medicoService;
         private readonly ILogger<MedicoController> _logger;
+        private readonly ILoginService _loginService;
 
-        public MedicoController(IMedicoService medicoService, ILogger<MedicoController> logger)
+        public MedicoController(IMedicoService medicoService, ILogger<MedicoController> logger, ILoginService loginService)
         {
             _medicoService = medicoService;
             _logger = logger;
+            _loginService = loginService;
         }
 
         // Endpoint para cadastrar um médico
@@ -45,11 +48,17 @@ namespace Hackathon_HealthMed.Controllers
 
         // Endpoint para abrir a agenda do médico e disponibilizar horários
         [HttpPost("AbrirAgenda")]
-        public async Task<IActionResult> AbrirAgenda([FromBody] LoginRequest request)
+        public async Task<IActionResult> AbrirAgenda([FromHeader] string Token)
         {
             try
             {
-                return Ok();
+                var user = await _loginService.IdentityUserAsync(Token);
+                if (user.perfil == EPerfil.Medico)
+                    return Ok();
+
+                return Forbid();
+
+                
             }
             catch (Exception ex)
             {
