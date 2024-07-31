@@ -4,6 +4,8 @@ using Dapper;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using HackathonHealthMed.Application.Request;
+using HackathonHealthMed.Domain.Enums;
 
 namespace HackathonHealthMed.Infra.Repositories
 {
@@ -17,7 +19,7 @@ namespace HackathonHealthMed.Infra.Repositories
         }
 
 
-        public async Task<int> AddAsync(Medico medico)
+        public async Task<int> AddAsync(CadastrarMedicoRequest medico, EPerfil perfil, string senhaHash)
         {
             var sql = @"
             INSERT INTO Medico (Nome, CPF, NumeroCRM, Email, SenhaHash)
@@ -32,7 +34,15 @@ namespace HackathonHealthMed.Infra.Repositories
                     connection.Open();
 
                 // Executa a consulta e retorna o número de linhas afetadas
-                return await connection.ExecuteAsync(sql, medico);
+                return await connection.QueryFirstOrDefault(sql, new
+                {
+                    Nome = medico.Nome,
+                    CPF = medico.CPF,
+                    NumeroCRM = medico.NumeroCRM,
+                    Email = medico.Email,
+                    SenhaHash = senhaHash,
+                    Perfil = perfil
+                });
             }
         }
 
@@ -75,6 +85,20 @@ namespace HackathonHealthMed.Infra.Repositories
                     connection.Open();
 
                 return await _dbConnection.ExecuteAsync(sql, medico);
+            }
+        }
+
+        public async Task UpdateIdentity(long medicoId, string identity)
+        {
+            var sql = "Update Usuario set [Identity]=@identity where Id=@medicoId";
+
+            using (var connection = _dbConnection)
+            {
+                // Abre a conexão se necessário
+                if (connection.State == ConnectionState.Closed)
+                    connection.Open();
+
+                await _dbConnection.ExecuteAsync(sql, new { medicoId, identity });
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using HackathonHealthMed.Application;
+using HackathonHealthMed.Application.Interfaces;
 using HackathonHealthMed.Application.Request;
 using HackathonHealthMed.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -9,10 +10,10 @@ namespace Hackathon_HealthMed.Controllers
     [Route("api/[controller]")]
     public class MedicoController : ControllerBase
     {
-        private readonly MedicoService _medicoService;
+        private readonly IMedicoService _medicoService;
         private readonly ILogger<MedicoController> _logger;
 
-        public MedicoController(MedicoService medicoService, ILogger<MedicoController> logger)
+        public MedicoController(IMedicoService medicoService, ILogger<MedicoController> logger)
         {
             _medicoService = medicoService;
             _logger = logger;
@@ -26,7 +27,7 @@ namespace Hackathon_HealthMed.Controllers
             try
             {
                 // Chama o serviço para cadastrar o médico com os dados do request
-                var result = await _medicoService.CadastrarMedicoAsync(request.Medico, request.Senha);
+                var result = await _medicoService.CadastrarMedicoAsync(request);
                 if (result > 0)
                 {
                     _logger.LogInformation("Médico cadastrado com sucesso.");
