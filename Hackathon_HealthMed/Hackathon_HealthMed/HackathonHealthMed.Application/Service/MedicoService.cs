@@ -53,6 +53,7 @@ namespace HackathonHealthMed.Application
             var senhaHash = _passwordHasher.HashPassword(medico.Senha);
             var identity = IdentityGenerator.Perform(senhaHash);
 
+            
             var result = await _medicoRepository.AddAsync(medico, EPerfil.Medico, senhaHash );
 
             await _medicoRepository.UpdateIdentity(result, identity);
