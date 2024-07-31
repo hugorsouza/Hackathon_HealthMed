@@ -26,20 +26,7 @@ namespace HackathonHealthMed.Application
             _logger = logger;
         }
 
- 
-
-        public async Task<Medico> AutenticarAsync(string email, string senha)
-        {
-            var medico = await _medicoRepository.GetByEmailAsync(email);
-            if (medico != null && _passwordHasher.VerifyHashedPassword(medico.SenhaHash, senha))
-            {
-                _logger.LogInformation("Autenticação de médico bem-sucedida.");
-                return medico;
-            }
-
-            _logger.LogWarning("Falha na autenticação do médico.");
-            return null;
-        }
+                
 
         public async Task<int> AtualizarMedicoAsync(Medico medico)
         {
@@ -53,6 +40,7 @@ namespace HackathonHealthMed.Application
             var senhaHash = _passwordHasher.HashPassword(medico.Senha);
             var identity = IdentityGenerator.Perform(senhaHash);
 
+            
             var result = await _medicoRepository.AddAsync(medico, EPerfil.Medico, senhaHash );
 
             await _medicoRepository.UpdateIdentity(result, identity);
@@ -62,10 +50,7 @@ namespace HackathonHealthMed.Application
         }
     }
 
-    public class PacienteService
-    {
-       
-    }
+ 
 
     public class HorarioDisponivelService
     {
