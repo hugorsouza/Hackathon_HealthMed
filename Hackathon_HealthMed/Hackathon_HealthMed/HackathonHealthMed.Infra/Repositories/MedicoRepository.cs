@@ -25,24 +25,25 @@ namespace HackathonHealthMed.Infra.Repositories
             var sql = @"
             INSERT INTO Usuarios (Nome, CPF, NumeroCRM, Email, SenhaHash, Perfil)
             VALUES (@Nome, @CPF, @NumeroCRM, @Email, @SenhaHash, @perfil);
-            SELECT CAST(SCOPE_IDENTITY() as int);"; // Retorna o ID gerado
-
-            // O uso de "using" garante que a conexão será fechada após o uso
+            SELECT CAST(SCOPE_IDENTITY() as bigint);"; // Retorna o ID gerado           
 
             var connection = _dbConnection.GetConnection();
 
 
-                // Executa a consulta e retorna o número de linhas afetadas
-                return await connection.QueryFirstOrDefault(sql, new
-                {
-                    Nome = medico.Nome,
-                    CPF = medico.CPF,
-                    NumeroCRM = medico.NumeroCRM,
-                    Email = medico.Email,
-                    SenhaHash = senhaHash,
-                    Perfil = (int)perfil
-                });
-            
+            // Executa a consulta e retorna o número de linhas afetadas
+            var result = await connection.QueryFirstOrDefaultAsync<int>(sql, new
+            {
+                Nome = medico.Nome,
+                CPF = medico.CPF,
+                NumeroCRM = medico.NumeroCRM,
+                Email = medico.Email,
+                SenhaHash = senhaHash,
+                Perfil = (int)perfil
+            });
+
+            return result;
+
+
         }
 
         public async Task<Medico> GetByEmailAsync(string email)
@@ -50,11 +51,11 @@ namespace HackathonHealthMed.Infra.Repositories
             var sql = "SELECT * FROM Medico WHERE Email = @Email;";
 
             var connection = _dbConnection.GetConnection();
-           
-           
 
-                return await connection.QueryFirstOrDefaultAsync<Medico>(sql, new { Email = email });
-            
+
+
+            return await connection.QueryFirstOrDefaultAsync<Medico>(sql, new { Email = email });
+
         }
 
         public async Task<Medico> GetByIdAsync(int id)
@@ -64,7 +65,7 @@ namespace HackathonHealthMed.Infra.Repositories
             var connection = _dbConnection.GetConnection();
 
             return await connection.QueryFirstOrDefaultAsync<Medico>(sql, new { Id = id });
-            
+
         }
 
         public async Task<int> UpdateAsync(Medico medico)
@@ -74,17 +75,17 @@ namespace HackathonHealthMed.Infra.Repositories
             var connection = _dbConnection.GetConnection();
 
             return await connection.ExecuteAsync(sql, medico);
-            
+
         }
 
         public async Task UpdateIdentity(long medicoId, string identity)
         {
-            var sql = "Update Usuario set [Identity]=@identity where Id=@medicoId";
+            var sql = "Update Usuarios set [Identity]=@identity where Id=@medicoId";
 
             var connection = _dbConnection.GetConnection();
 
             await connection.ExecuteAsync(sql, new { medicoId, identity });
-            
+
         }
     }
 }

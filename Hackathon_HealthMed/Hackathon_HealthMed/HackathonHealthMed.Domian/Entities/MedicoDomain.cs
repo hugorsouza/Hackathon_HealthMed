@@ -14,6 +14,7 @@ namespace HackathonHealthMed.Domain.Entities
         public string NumeroCRM { get; set; }
         public string Email { get; set; }
         public string SenhaHash { get; set; }
+        public string Identity { get; set; }
     }
 
 }
