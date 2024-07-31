@@ -19,46 +19,6 @@ namespace HackathonHealthMed.Application.Service
             _horarioDisponivelRepository = horarioDisponivelRepository;
         }
 
-        //public async Task<bool> AdicionarHorarioAsync(HorarioDisponivelDto horarioDto)
-        //{
-        //    var disponibilidade = await _horarioDisponivelRepository.VerificarDisponibilidadeAsync(
-        //        horarioDto.MedicoId, horarioDto.Data, horarioDto.HoraInicio);
-
-        //    if (!disponibilidade)
-        //    {
-        //        return false; // Horário já ocupado
-        //    }
-
-        //    var horarioDisponivel = new HorarioDisponivel
-        //    {
-        //        MedicoId = horarioDto.MedicoId,
-        //        Data = horarioDto.Data,
-        //        HoraInicio = horarioDto.HoraInicio,
-        //        HoraFim = horarioDto.HoraFim,
-        //        EstaDisponivel = true
-        //    };
-
-        //    await _horarioDisponivelRepository.AdicionarAsync(horarioDisponivel);
-        //    return true;
-        //}
-
-        //public async Task AtualizarHorarioAsync(HorarioDisponivelDto horarioDto)
-        //{
-        //    var horario = await _horarioDisponivelRepository.ObterPorIdAsync(horarioDto.Id);
-        //    if (horario == null)
-        //    {
-        //        throw new KeyNotFoundException("Horário não encontrado.");
-        //    }
-
-        //    horario.Data = horarioDto.Data;
-        //    horario.HoraInicio = horarioDto.HoraInicio;
-        //    horario.HoraFim = horarioDto.HoraFim;
-        //    horario.EstaDisponivel = horarioDto.Disponivel;
-
-        //    await _horarioDisponivelRepository.AtualizarAsync(horario);
-        //}
-
-
         public async Task<int> ObterHorariosPorMedicoAsync(int horarioDisponivel)
         {
             return await _horarioDisponivelRepository.ObterPorMedicoAsync(horarioDisponivel);
@@ -103,5 +63,4 @@ namespace HackathonHealthMed.Application.Service
             await _horarioDisponivelRepository.AtualizarAsync(horario);
         }
     }
-
 }
