@@ -1,6 +1,8 @@
 ﻿
 using HackathonHealthMed.Application.DTO;
+using HackathonHealthMed.Application.Interfaces;
 using HackathonHealthMed.Application.Service;
+using HackathonHealthMed.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_HealthMed.Controllers
@@ -9,14 +11,14 @@ namespace Hackathon_HealthMed.Controllers
     [Route("api/[controller]")]
     public class HorarioDisponivelController : ControllerBase
     {
-        private readonly HorarioDisponivelService _horarioDisponivelService;
+        private readonly IHorarioDisponivelService _horarioDisponivelService;
 
-        public HorarioDisponivelController(HorarioDisponivelService horarioDisponivelService)
+        public HorarioDisponivelController(IHorarioDisponivelService horarioDisponivelService)
         {
             _horarioDisponivelService = horarioDisponivelService;
         }
 
-        [HttpGet("{medicoId}")]
+        [HttpGet("ObterHorariosPorMedico")]
         public async Task<IActionResult> ObterHorariosPorMedico(int medicoId)
         {
             var horarios = await _horarioDisponivelService.ObterHorariosPorMedicoAsync(medicoId);
@@ -27,7 +29,7 @@ namespace Hackathon_HealthMed.Controllers
         public async Task<IActionResult> AdicionarHorario([FromBody] HorarioDisponivelDto horarioDisponivelDto)
         {
             var resultado = await _horarioDisponivelService.AdicionarHorarioAsync(horarioDisponivelDto);
-            if (!resultado)
+            if (resultado == null)
             {
                 return Conflict("Horário já está ocupado.");
             }
@@ -48,5 +50,4 @@ namespace Hackathon_HealthMed.Controllers
             }
         }
     }
-
 }

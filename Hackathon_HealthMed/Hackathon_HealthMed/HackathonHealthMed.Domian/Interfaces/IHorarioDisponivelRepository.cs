@@ -9,9 +9,9 @@ namespace HackathonHealthMed.Domain.Interfaces
 {
     public interface IHorarioDisponivelRepository
     {
-        Task<IEnumerable<HorarioDisponivel>> ObterPorMedicoAsync(int medicoId);
+        Task<int> ObterPorMedicoAsync(int horarioDisponivel);
         Task<HorarioDisponivel> ObterPorIdAsync(int id);
-        Task AdicionarAsync(HorarioDisponivel horarioDisponivel);
+        Task<bool> AdicionarAsync(HorarioDisponivel horarioDisponivel);
         Task AtualizarAsync(HorarioDisponivel horarioDisponivel);
         Task<bool> VerificarDisponibilidadeAsync(int medicoId, DateTime data, TimeSpan horaInicio);
     }

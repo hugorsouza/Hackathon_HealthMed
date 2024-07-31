@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HackathonHealthMed.Application\HackathonHealthMed.Application.csproj" />
+    <ProjectReference Include="..\HackathonHealthMed.Infra\HackathonHealthMed.Infra.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,18 +1,24 @@
 using HackathonHealthMed.Application.Interfaces;
 using HackathonHealthMed.Application.Service;
 using HackathonHealthMed.Domain.Interfaces;
+using HackathonHealthMed.Infra.Repositories;
+using System.Data.SqlClient;
+using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
-builder.Services.AddScoped<IHorarioDisponivelRepository, HorarioDisponivelService>();
+builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IHorarioDisponivelService, HorarioDisponivelService>();
+builder.Services.AddScoped<IHorarioDisponivelRepository, HorarioDisponivelRepository>();
+
+
+builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -20,7 +26,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>{});
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
