@@ -36,7 +36,7 @@ namespace HackathonHealthMed.Infra.Repositories
 
         public async Task<Usuario> GetByIdentityAsync(string token)
         {
-            var sql = @$"SELECT * FROM USUARIOS WHERE IDENTITY LIKE '%{token}%'";
+            var sql = @$"SELECT * FROM USUARIOS WHERE [IDENTITY] LIKE '%{token}%'";
 
             var connection = _dbConnection.GetConnection();
 

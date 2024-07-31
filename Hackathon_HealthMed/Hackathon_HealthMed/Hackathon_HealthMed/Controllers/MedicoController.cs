@@ -56,7 +56,7 @@ namespace Hackathon_HealthMed.Controllers
                 if (user.perfil == EPerfil.Medico)
                     return Ok();
 
-                return Forbid();
+                return Unauthorized();
 
                 
             }
