@@ -19,6 +19,8 @@ builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
 builder.Services.AddScoped<IDataBaseService, DataBaseService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IPacienteService, PacienteService>();
+builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
 
 // Configuração de logging
 //builder.Logging.ClearProviders(); // Limpa provedores padrão, se necessário
