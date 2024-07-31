@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HackathonHealthMed.Domain.Entities
+namespace HackathonHealthMed.Application.DTO
 {
-    public class HorarioDisponivel
+    public class HorarioDisponivelDto
     {
-        public int Id { get; set; }
+        public int Id { get; set; } 
         public int MedicoId { get; set; }
         public DateTime Data { get; set; }
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraFim { get; set; }
-        public bool EstaDisponivel { get; set; }
+        public bool Disponivel { get; set; }  
     }
 }
