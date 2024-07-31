@@ -9,7 +9,11 @@ namespace HackathonHealthMed.Application.Request
 {
     public class CadastrarMedicoRequest
     {
-        public Medico Medico { get; set; }
+        public string Nome { get; set; }
+        public string CPF { get; set; }
+        public string NumeroCRM { get; set; }
+        public string Email { get; set; }
         public string Senha { get; set; }
+        
     }
 }
