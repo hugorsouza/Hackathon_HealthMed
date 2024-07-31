@@ -14,5 +14,6 @@ namespace HackathonHealthMed.Domain.Interfaces
         Task<bool> AdicionarAsync(HorarioDisponivel horarioDisponivel);
         Task AtualizarAsync(HorarioDisponivel horarioDisponivel);
         Task<bool> VerificarDisponibilidadeAsync(int medicoId, DateTime data, TimeSpan horaInicio);
+        Task<bool> DeletarAsync(int id);
     }
 }

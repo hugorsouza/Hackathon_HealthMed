@@ -62,5 +62,16 @@ namespace HackathonHealthMed.Application.Service
 
             await _horarioDisponivelRepository.AtualizarAsync(horario);
         }
+
+        public async Task<bool> DeletarHorarioAsync(int id)
+        {
+            var horario = await _horarioDisponivelRepository.ObterPorIdAsync(id);
+            if (horario == null)
+            {
+                throw new KeyNotFoundException("Horário não encontrado.");
+            }
+
+            return await _horarioDisponivelRepository.DeletarAsync(id);
+        }
     }
 }

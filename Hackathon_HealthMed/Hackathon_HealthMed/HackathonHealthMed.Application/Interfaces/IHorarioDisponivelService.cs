@@ -14,6 +14,6 @@ namespace HackathonHealthMed.Application.Interfaces
         Task<int> ObterHorariosPorMedicoAsync(int horarioDisponivel);
         Task<bool> AdicionarHorarioAsync(HorarioDisponivelDto horarioDisponivel);
         Task AtualizarHorarioAsync(HorarioDisponivelDto horarioDisponivel);
-
+        Task<bool> DeletarHorarioAsync(int id);
     }
 }

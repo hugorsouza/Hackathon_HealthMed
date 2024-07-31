@@ -25,18 +25,18 @@ namespace Hackathon_HealthMed.Controllers
             return Ok(horarios);
         }
 
-        [HttpPost]
+        [HttpPost("AdicionarHorario")]
         public async Task<IActionResult> AdicionarHorario([FromBody] HorarioDisponivelDto horarioDisponivelDto)
         {
             var resultado = await _horarioDisponivelService.AdicionarHorarioAsync(horarioDisponivelDto);
-            if (resultado == null)
+            if (!resultado)
             {
                 return Conflict("Horário já está ocupado.");
             }
             return Ok();
         }
 
-        [HttpPut]
+        [HttpPut("AtualizarHorario")]
         public async Task<IActionResult> AtualizarHorario([FromBody] HorarioDisponivelDto horarioDisponivelDto)
         {
             try
@@ -49,5 +49,24 @@ namespace Hackathon_HealthMed.Controllers
                 return NotFound("Horário não encontrado.");
             }
         }
+
+        [HttpDelete("{id}/{dataHorario}")]
+        public async Task<IActionResult> DeletarHorario(int id)
+        {
+            try
+            {
+                var sucesso = await _horarioDisponivelService.DeletarHorarioAsync(id);
+                if (sucesso)
+                {
+                    return NoContent(); // Retorna 204 No Content se o delete foi bem-sucedido
+                }
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno no servidor");
+            }
+        }
+
     }
 }

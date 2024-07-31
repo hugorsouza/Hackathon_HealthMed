@@ -24,29 +24,25 @@ namespace HackathonHealthMed.Infra.Repositories
 
         public async Task<int> ObterPorMedicoAsync(int horarioDisponivel)
         {
-            var sql = "SELECT * FROM HorariosDisponiveis WHERE MedicoId = @MedicoId";
+            var sql = "";
 
             var connection = _dbConnection.GetConnection();
-            // Executa a consulta e retorna o número de linhas afetadas
+
             return await connection.ExecuteAsync(sql, horarioDisponivel);
         }
 
         public async Task<HorarioDisponivel> ObterPorIdAsync(int id)
         {
-            var sql = "SELECT * FROM HorariosDisponiveis WHERE Id = @Id";
+            var sql = "";
 
             var connection = _dbConnection.GetConnection();
 
             return await connection.QuerySingleOrDefaultAsync<HorarioDisponivel>(sql, new { Id = id });
-          
-            
         }
 
         public async Task<bool> AdicionarAsync(HorarioDisponivel horarioDisponivel)
         {
-            var sql = @"
-            INSERT INTO HorariosDisponiveis (MedicoId, Data, HoraInicio, HoraFim, EstaDisponivel)
-            VALUES (@MedicoId, @Data, @HoraInicio, @HoraFim, @Disponivel)";
+            var sql = "";
            
             var connection = _dbConnection.GetConnection();
 
@@ -65,10 +61,7 @@ namespace HackathonHealthMed.Infra.Repositories
 
         public async Task AtualizarAsync(HorarioDisponivel horarioDisponivel)
         {
-            var sql = @"
-            UPDATE HorariosDisponiveis
-            SET Data = @Data, HoraInicio = @HoraInicio, HoraFim = @HoraFim, EstaDisponivel = @EstaDisponivel
-            WHERE Id = @Id";
+            var sql = "";
 
             var connection = _dbConnection.GetConnection();
 
@@ -77,16 +70,23 @@ namespace HackathonHealthMed.Infra.Repositories
 
         public async Task<bool> VerificarDisponibilidadeAsync(int medicoId, DateTime data, TimeSpan horaInicio)
         {
-            var sql= @"
-            SELECT COUNT(1) 
-            FROM HorariosDisponiveis
-            WHERE MedicoId = @MedicoId AND Data = @Data AND HoraInicio = @HoraInicio AND Disponivel = 1";
+            var sql= "";
 
             var connection = _dbConnection.GetConnection();
 
             var count = await connection.ExecuteScalarAsync<int>(sql, new { MedicoId = medicoId, Data = data, HoraInicio = horaInicio });
                 return count == 0;
-        }    
+        }
+
+        public async Task<bool> DeletarAsync(int id)
+        {
+            var sql = "";
+
+            var connection = _dbConnection.GetConnection();
+            
+            var rowsAffected = await connection.ExecuteAsync(sql, new { Id = id });
+            return rowsAffected > 0;
+        }
     }
 }
 
