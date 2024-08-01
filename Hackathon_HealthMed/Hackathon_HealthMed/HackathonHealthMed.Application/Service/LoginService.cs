@@ -16,12 +16,15 @@ namespace HackathonHealthMed.Application.Service
         private readonly IPasswordHasher _passwordHasher;
         private readonly ILogger<LoginService> _logger;
         private readonly ILoginRepository _loginRepository;
+        private readonly ISendEmail _sendEmail;
 
-        public LoginService(IPasswordHasher passwordHasher, ILogger<LoginService> logger, ILoginRepository loginRepository)
+
+        public LoginService(IPasswordHasher passwordHasher, ILogger<LoginService> logger, ILoginRepository loginRepository, ISendEmail sendEmail)
         {           
             _passwordHasher = passwordHasher;
             _logger = logger;
             _loginRepository = loginRepository;
+            _sendEmail = sendEmail;
         }
         public async Task<string> AutenticarAsync(string email, string password)
         {
@@ -29,7 +32,7 @@ namespace HackathonHealthMed.Application.Service
             if (medico != null && _passwordHasher.VerifyHashedPassword(medico.SenhaHash, password))
             {
                 _logger.LogInformation("Autenticação de médico bem-sucedida.");
-                return medico.Identity;
+                 return medico.Identity;
             }
 
             _logger.LogWarning("Falha na autenticação do médico.");

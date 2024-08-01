@@ -12,5 +12,7 @@ namespace HackathonHealthMed.Domain.Entities
         public long Id { get; set; }
         public string identity { get; set; }
         public EPerfil perfil { get; set; }
+        public string Email { get; set; }
+        public string Nome { get; set; }
     }
 }
