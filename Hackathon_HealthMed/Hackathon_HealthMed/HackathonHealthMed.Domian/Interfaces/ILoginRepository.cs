@@ -12,5 +12,6 @@ namespace HackathonHealthMed.Domain.Interfaces
 
         Task<Medico> GetByEmailAsync(string email);
         Task<Usuario> GetByIdentityAsync(string token);
+        Task<Usuario> GetByIdAsync(long id);
     }
 }

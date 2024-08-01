@@ -21,7 +21,7 @@ builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
 builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
-
+builder.Services.AddScoped<ISendEmail, SendEmail>();
 // Configuração de logging
 //builder.Logging.ClearProviders(); // Limpa provedores padrão, se necessário
 //builder.Logging.AddConsole(); // Adiciona provedor de log para console
