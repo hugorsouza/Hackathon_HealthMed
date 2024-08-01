@@ -1,15 +1,30 @@
+using HackathonHealthMed.Application;
 using HackathonHealthMed.Application.Interfaces;
 using HackathonHealthMed.Application.Service;
+using HackathonHealthMed.Domain.Interfaces;
+using HackathonHealthMed.Infra.Context;
+using HackathonHealthMed.Infra.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSingleton<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IMedicoService, MedicoService>();
+builder.Services.AddScoped<IMedicoRepository, MedicoRepository>();
+builder.Services.AddScoped<IDataBaseService, DataBaseService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+builder.Services.AddScoped<ILoginRepository, LoginRepository>();
+builder.Services.AddScoped<IPacienteService, PacienteService>();
+builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
+builder.Services.AddScoped<IHorarioDisponivelService, HackathonHealthMed.Application.Service.HorarioDisponivelService>();
+builder.Services.AddScoped<IHorarioDisponivelRepository, HorarioDisponivelRepository>();
 
 // Configuração de logging
 //builder.Logging.ClearProviders(); // Limpa provedores padrão, se necessário
@@ -22,10 +37,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(c =>{});
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
 
 app.UseAuthorization();
 
