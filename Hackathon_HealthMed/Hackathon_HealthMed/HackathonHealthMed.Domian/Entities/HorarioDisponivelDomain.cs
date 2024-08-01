@@ -10,13 +10,13 @@ namespace HackathonHealthMed.Domain.Entities
     {
         public int Id { get; set; }
         public int MedicoId { get; set; }
-<<<<<<< HEAD
+
         public DateTime DataHoraInicio { get; set; }
         public DateTime DataHoraFim { get; set; }
-=======
+
         public DateTime Horario { get; set; }
         public string Nome { get; set; }
         public int PacienteId { get; set; }
->>>>>>> e677a17 (Consultas)
+
     }
 }
