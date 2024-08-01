@@ -19,15 +19,15 @@ namespace HackathonHealthMed.Application.Service
             _horarioDisponivelRepository = horarioDisponivelRepository;
         }
 
-        public async Task<int> ObterHorariosPorMedicoAsync(int horarioDisponivel)
+        public async Task<HorarioDisponivel> ObterHorariosPorMedicoAsync(int medicoId)
         {
-            return await _horarioDisponivelRepository.ObterPorMedicoAsync(horarioDisponivel);
+            return await _horarioDisponivelRepository.ObterPorMedicoAsync(medicoId);
         }
 
         public async Task<bool> AdicionarHorarioAsync(HorarioDisponivelDto horarioDisponivelDto)
         {
             var disponibilidade = await _horarioDisponivelRepository.VerificarDisponibilidadeAsync(
-                horarioDisponivelDto.MedicoId, horarioDisponivelDto.Data, horarioDisponivelDto.HoraInicio);
+                horarioDisponivelDto.MedicoId, horarioDisponivelDto.Horario);
 
             if (!disponibilidade)
             {
@@ -37,10 +37,7 @@ namespace HackathonHealthMed.Application.Service
             var horarioDisponivel = new HorarioDisponivel
             {
                 MedicoId = horarioDisponivelDto.MedicoId,
-                Data = horarioDisponivelDto.Data,
-                HoraInicio = horarioDisponivelDto.HoraInicio,
-                HoraFim = horarioDisponivelDto.HoraFim,
-                EstaDisponivel = true
+                Horario = horarioDisponivelDto.Horario
             };
 
             await _horarioDisponivelRepository.AdicionarAsync(horarioDisponivel);
@@ -55,10 +52,7 @@ namespace HackathonHealthMed.Application.Service
                 throw new KeyNotFoundException("Horário não encontrado.");
             }
 
-            horario.Data = horarioDisponivelDto.Data;
-            horario.HoraInicio = horarioDisponivelDto.HoraInicio;
-            horario.HoraFim = horarioDisponivelDto.HoraFim;
-            horario.EstaDisponivel = horarioDisponivelDto.Disponivel;
+            horario.Horario = horarioDisponivelDto.Horario;
 
             await _horarioDisponivelRepository.AtualizarAsync(horario);
         }
@@ -72,6 +66,62 @@ namespace HackathonHealthMed.Application.Service
             }
 
             return await _horarioDisponivelRepository.DeletarAsync(id);
+        }
+
+        public async Task<IEnumerable<HorarioDisponivelDto>> ObterHorariosPorNomeMedicoAsync(string nome)
+        {
+            var horarios = await _horarioDisponivelRepository.ObterPorNomeMedicoAsync(nome);
+
+            return horarios.Select(h => new HorarioDisponivelDto
+            {
+                Nome = h.Nome,
+                MedicoId = h.MedicoId,
+                Horario = h.Horario,
+                Id = h.Id
+            });
+        }
+
+        public async Task<bool> AgendarConsultaAsync(HorarioDisponivelDto consultaDto)
+        {
+            // Verifica se o médico existe
+            var medico = await _horarioDisponivelRepository.ObterPorMedicoAsync(consultaDto.MedicoId);
+            if (medico == null)
+                throw new KeyNotFoundException("Médico não encontrado.");
+
+            // Verifica se o paciente existe
+            var paciente = await _horarioDisponivelRepository.ObterPacientePorIdAsync(consultaDto.PacienteId);
+            if (paciente == null)
+                throw new KeyNotFoundException("Paciente não encontrado.");
+
+            // Verifica se o horário está disponível
+            var disponibilidade = await _horarioDisponivelRepository.VerificarDisponibilidadeConsultaAsync(consultaDto.MedicoId, consultaDto.PacienteId);
+            if (!disponibilidade)
+                return false; // Horário não disponível
+
+            // Cria a consulta
+            var consulta = new HorarioDisponivel
+            {
+                MedicoId = consultaDto.MedicoId,
+                PacienteId = consultaDto.PacienteId,
+                Horario = consultaDto.Horario,
+                Id = consultaDto.Id
+            };
+
+            return await _horarioDisponivelRepository.AgendarConsultaAsync(consulta);
+        }
+
+        public async Task<bool> DesmarcarConsultaAsync(int id, int pacienteId)
+        {
+            var disponibilidade = await _horarioDisponivelRepository.CancelarConsultaAsync(id, pacienteId);
+            if (!disponibilidade)
+                return false; // Horário não disponível
+
+            return true;
+        }
+
+        public async Task<HorarioDisponivel> ExibirConsultasAsync(int pacienteId)
+        {
+            return await _horarioDisponivelRepository.ExibirConsultasAsync(pacienteId);
         }
     }
 }

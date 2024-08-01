@@ -50,7 +50,19 @@ namespace Hackathon_HealthMed.Controllers
             }
         }
 
-        [HttpDelete("{id}/{dataHorario}")]
+        [HttpGet("ObterHorariosPorNomeMedico/{nome}")]
+        public async Task<IActionResult> ObterHorariosPorNomeMedico(string nome)
+        {
+            var horarios = await _horarioDisponivelService.ObterHorariosPorNomeMedicoAsync(nome);
+            if (horarios == null || !horarios.Any())
+            {
+                return NotFound("Nenhum horário encontrado para o médico especificado.");
+            }
+
+            return Ok(horarios);
+        }
+
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeletarHorario(int id)
         {
             try
@@ -68,5 +80,55 @@ namespace Hackathon_HealthMed.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("AgendarConsulta")]
+        public async Task<IActionResult> AgendarConsulta([FromBody] HorarioDisponivelDto consultaDto)
+        {
+            try
+            {
+                var sucesso = await _horarioDisponivelService.AgendarConsultaAsync(consultaDto);
+                if (!sucesso)
+                    return BadRequest("Horário não disponível.");
+
+                return Ok("Consulta agendada com sucesso.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao agendar consulta: {ex.Message}");
+            }
+        }
+
+        [HttpPut]
+        [Route("DesmarcarConsulta")]
+        public async Task<IActionResult> DesmarcarConsulta(int id, int pacienteId)
+        {
+            try
+            {
+                var sucesso = await _horarioDisponivelService.DesmarcarConsultaAsync(id, pacienteId);
+                if (!sucesso)
+                    return BadRequest("Consulta não localizada não disponível.");
+
+                return Ok("Cancelamento realizado com sucesso.");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao desmarcar consulta: {ex.Message}");
+            }
+        }
+
+        [HttpGet("ExibirConsultas")]
+        public async Task<IActionResult> ExibirConsultas(int pacienteId)
+        {
+            var consultas = await _horarioDisponivelService.ExibirConsultasAsync(pacienteId);
+            return Ok(consultas);
+        }
     }
 }
