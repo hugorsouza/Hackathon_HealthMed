@@ -109,6 +109,7 @@ namespace HackathonHealthMed.Application.Service
                 Id = consultaDto.Id
             };
 
+
             var result = await _horarioDisponivelRepository.AgendarConsultaAsync(consulta);
             if (result == true)
                 await _sendEmail.Send((long)consultaDto.PacienteId, (long)consultaDto.MedicoId, consultaDto.Horario);
