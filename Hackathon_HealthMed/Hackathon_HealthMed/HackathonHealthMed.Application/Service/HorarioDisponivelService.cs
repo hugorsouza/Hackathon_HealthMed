@@ -123,5 +123,10 @@ namespace HackathonHealthMed.Application.Service
         {
             return await _horarioDisponivelRepository.ExibirConsultasAsync(pacienteId);
         }
+
+        public async Task<IEnumerable<HorarioDisponivel>> ObterMedicosComHorariosDisponiveisAsync()
+        {
+            return await _horarioDisponivelRepository.ObterMedicosComHorariosDisponiveisAsync();
+        }
     }
 }
