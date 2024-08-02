@@ -1,6 +1,8 @@
 ﻿using HackathonHealthMed.Application;
+using HackathonHealthMed.Application.Interfaces;
 using HackathonHealthMed.Application.Request;
 using HackathonHealthMed.Domain.Entities;
+using HackathonHealthMed.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_HealthMed.Controllers
@@ -9,23 +11,26 @@ namespace Hackathon_HealthMed.Controllers
     [Route("api/[controller]")]
     public class MedicoController : ControllerBase
     {
-        private readonly MedicoService _medicoService;
+        private readonly IMedicoService _medicoService;
         private readonly ILogger<MedicoController> _logger;
+        private readonly ILoginService _loginService;
 
-        public MedicoController(MedicoService medicoService, ILogger<MedicoController> logger)
+        public MedicoController(IMedicoService medicoService, ILogger<MedicoController> logger, ILoginService loginService)
         {
             _medicoService = medicoService;
             _logger = logger;
+            _loginService = loginService;
         }
 
         // Endpoint para cadastrar um médico
         [HttpPost("cadastrar")]
         public async Task<IActionResult> Cadastrar([FromBody] CadastrarMedicoRequest request)
         {
+
             try
             {
                 // Chama o serviço para cadastrar o médico com os dados do request
-                var result = await _medicoService.CadastrarMedicoAsync(request.Medico, request.Senha);
+                var result = await _medicoService.CadastrarMedicoAsync(request);
                 if (result > 0)
                 {
                     _logger.LogInformation("Médico cadastrado com sucesso.");
@@ -40,20 +45,20 @@ namespace Hackathon_HealthMed.Controllers
             }
         }
 
-        // Endpoint para autenticação (login)
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequest request)
+
+        // Endpoint para abrir a agenda do médico e disponibilizar horários
+        [HttpPost("AbrirAgenda")]
+        public async Task<IActionResult> AbrirAgenda([FromHeader] string Token)
         {
             try
             {
-                // Chama o serviço de autenticação com as credenciais do request
-                var medico = await _medicoService.AutenticarAsync(request.Email, request.Senha);
-                if (medico != null)
-                {
-                    _logger.LogInformation("Login bem-sucedido.");
-                    return Ok(new { token = "BearerTokenGerado" }); // Implementar a geração do token aqui.
-                }
-                return Unauthorized(new { success = false, message = "Credenciais inválidas." });
+                var user = await _loginService.IdentityUserAsync(Token);
+                if (user.perfil == EPerfil.Medico)
+                    return Ok();
+
+                return Unauthorized();
+
+                
             }
             catch (Exception ex)
             {
@@ -61,6 +66,22 @@ namespace Hackathon_HealthMed.Controllers
                 return StatusCode(500, "Erro interno do servidor.");
             }
         }
-    }
+
+
+        // Endpoint para abrir o médico visualizar a agenda do dia selecionado
+        [HttpGet("VisualizarAgenda")]
+        public async Task<IActionResult> VisualizarAgenda([FromBody] LoginRequest request)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao tentar login.");
+                return StatusCode(500, "Erro interno do servidor.");
+            }
+        }
+    }       
 }
 
