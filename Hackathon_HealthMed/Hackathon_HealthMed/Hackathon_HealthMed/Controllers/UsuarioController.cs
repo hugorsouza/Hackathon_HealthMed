@@ -2,6 +2,7 @@
 using HackathonHealthMed.Application;
 using Microsoft.AspNetCore.Mvc;
 using HackathonHealthMed.Application.Interfaces;
+using HackathonHealthMed.Domain.Enums;
 
 namespace Hackathon_HealthMed.Controllers
 {
@@ -32,6 +33,26 @@ namespace Hackathon_HealthMed.Controllers
                 }
                 return Unauthorized(new { success = false, message = "Credenciais inválidas." });
                                 
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Erro ao tentar login.");
+                return StatusCode(500, "Erro interno do servidor.");
+            }
+        }
+
+        [HttpPost("token")]
+        public async Task<IActionResult> Token([FromHeader] string Token)
+        {
+            try
+            {
+                var user = await _loginService.IdentityUserAsync(Token);
+                if (user.perfil == EPerfil.Medico)
+                    return Ok();
+
+                return Unauthorized();
+
+
             }
             catch (Exception ex)
             {

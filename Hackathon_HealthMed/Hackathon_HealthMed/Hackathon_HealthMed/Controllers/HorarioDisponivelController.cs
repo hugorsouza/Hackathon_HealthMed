@@ -1,8 +1,10 @@
 ﻿
+using HackathonHealthMed.Application;
 using HackathonHealthMed.Application.DTO;
 using HackathonHealthMed.Application.Interfaces;
 using HackathonHealthMed.Application.Service;
 using HackathonHealthMed.Domain.Entities;
+using HackathonHealthMed.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hackathon_HealthMed.Controllers
@@ -19,6 +21,7 @@ namespace Hackathon_HealthMed.Controllers
         }
 
         [HttpGet("ObterHorariosPorMedico")]
+        [PerfilFilter(EPerfil.Paciente)]
         public async Task<IActionResult> ObterHorariosPorMedico(int medicoId)
         {
             var horarios = await _horarioDisponivelService.ObterHorariosPorMedicoAsync(medicoId);
@@ -26,6 +29,7 @@ namespace Hackathon_HealthMed.Controllers
         }
 
         [HttpPost("AdicionarHorario")]
+        [PerfilFilter(EPerfil.Medico)]
         public async Task<IActionResult> AdicionarHorario([FromBody] HorarioDisponivelDto horarioDisponivelDto)
         {
             var resultado = await _horarioDisponivelService.AdicionarHorarioAsync(horarioDisponivelDto);
@@ -37,6 +41,7 @@ namespace Hackathon_HealthMed.Controllers
         }
 
         [HttpPut("AtualizarHorario")]
+        [PerfilFilter(EPerfil.Medico)]
         public async Task<IActionResult> AtualizarHorario([FromBody] HorarioDisponivelDto horarioDisponivelDto)
         {
             try
@@ -51,6 +56,7 @@ namespace Hackathon_HealthMed.Controllers
         }
 
         [HttpGet("ObterHorariosPorNomeMedico/{nome}")]
+        [PerfilFilter(EPerfil.Paciente)]
         public async Task<IActionResult> ObterHorariosPorNomeMedico(string nome)
         {
             var horarios = await _horarioDisponivelService.ObterHorariosPorNomeMedicoAsync(nome);
@@ -62,7 +68,23 @@ namespace Hackathon_HealthMed.Controllers
             return Ok(horarios);
         }
 
-        [HttpDelete("{id}")]
+        [HttpGet("ObterMedicoDisponiveis")]
+        [PerfilFilter(EPerfil.Paciente)]
+        public async Task<IActionResult> ObterMedicosComHorariosDisponiveis()
+        {
+            try
+            {
+                var medicos = await _horarioDisponivelService.ObterMedicosComHorariosDisponiveisAsync();
+                return Ok(medicos);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Erro interno do servidor.");
+            }
+        }
+
+        [HttpDelete("DeletarHorario/{id}")]
+        [PerfilFilter(EPerfil.Medico)]
         public async Task<IActionResult> DeletarHorario(int id)
         {
             try
@@ -82,6 +104,7 @@ namespace Hackathon_HealthMed.Controllers
 
         [HttpPost]
         [Route("AgendarConsulta")]
+        [PerfilFilter(EPerfil.Paciente)]
         public async Task<IActionResult> AgendarConsulta([FromBody] HorarioDisponivelDto consultaDto)
         {
             try
@@ -104,6 +127,7 @@ namespace Hackathon_HealthMed.Controllers
 
         [HttpPut]
         [Route("DesmarcarConsulta")]
+        [PerfilFilter(EPerfil.Paciente)]
         public async Task<IActionResult> DesmarcarConsulta(int id, int pacienteId)
         {
             try
@@ -125,6 +149,7 @@ namespace Hackathon_HealthMed.Controllers
         }
 
         [HttpGet("ExibirConsultas")]
+        [PerfilFilter(EPerfil.Paciente)]
         public async Task<IActionResult> ExibirConsultas(int pacienteId)
         {
             var consultas = await _horarioDisponivelService.ExibirConsultasAsync(pacienteId);

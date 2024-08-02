@@ -44,44 +44,6 @@ namespace Hackathon_HealthMed.Controllers
                 return StatusCode(500, "Erro interno do servidor.");
             }
         }
-
-
-        // Endpoint para abrir a agenda do médico e disponibilizar horários
-        [HttpPost("AbrirAgenda")]
-        public async Task<IActionResult> AbrirAgenda([FromHeader] string Token)
-        {
-            try
-            {
-                var user = await _loginService.IdentityUserAsync(Token);
-                if (user.perfil == EPerfil.Medico)
-                    return Ok();
-
-                return Unauthorized();
-
-                
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao tentar login.");
-                return StatusCode(500, "Erro interno do servidor.");
-            }
-        }
-
-
-        // Endpoint para abrir o médico visualizar a agenda do dia selecionado
-        [HttpGet("VisualizarAgenda")]
-        public async Task<IActionResult> VisualizarAgenda([FromBody] LoginRequest request)
-        {
-            try
-            {
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Erro ao tentar login.");
-                return StatusCode(500, "Erro interno do servidor.");
-            }
-        }
     }       
 }
 

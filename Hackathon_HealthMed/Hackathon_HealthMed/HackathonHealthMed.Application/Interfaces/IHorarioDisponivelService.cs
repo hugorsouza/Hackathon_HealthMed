@@ -19,5 +19,6 @@ namespace HackathonHealthMed.Application.Interfaces
         Task<bool> AgendarConsultaAsync(HorarioDisponivelDto consultaDto);
         Task<bool> DesmarcarConsultaAsync(int id, int pacienteId);
         Task<HorarioDisponivel> ExibirConsultasAsync(int pacienteId);
+        Task<IEnumerable<HorarioDisponivel>> ObterMedicosComHorariosDisponiveisAsync();
     }
 }

@@ -26,6 +26,6 @@ namespace HackathonHealthMed.Domain.Interfaces
         Task<bool> VerificarDisponibilidadeConsultaAsync(int medicoId, int pacienteId);
         Task<bool> CancelarConsultaAsync(int id, int pacienteId);
         Task<HorarioDisponivel> ExibirConsultasAsync(int pacienteId);
-
+        Task<IEnumerable<HorarioDisponivel>> ObterMedicosComHorariosDisponiveisAsync();
     }
 }

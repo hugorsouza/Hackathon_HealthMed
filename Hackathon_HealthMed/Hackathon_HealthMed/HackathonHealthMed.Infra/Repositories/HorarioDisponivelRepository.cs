@@ -138,6 +138,17 @@ namespace HackathonHealthMed.Infra.Repositories
             return await connection.QueryFirstOrDefaultAsync<HorarioDisponivel>(sql, new { PacienteId = pacienteId });
         }
 
+        public async Task<IEnumerable<HorarioDisponivel>> ObterMedicosComHorariosDisponiveisAsync()
+        {
+            var sql = @"
+                      select A.MedicoId, U.Nome, A.Horario, A.Id  
+                      from Usuarios U
+                      inner join Agenda A on U.Id = A.MedicoId 
+                      WHERE A.PacienteId is null";
+            var connection = _dbConnection.GetConnection();
+            return await connection.QueryAsync<HorarioDisponivel>(sql);
+        }
+
         public Task<int> AddAsync(HorarioDisponivel horario)
         {
             throw new NotImplementedException();
