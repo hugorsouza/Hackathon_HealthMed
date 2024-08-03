@@ -41,10 +41,9 @@ namespace HackathonHealthMed.Application.Service
 
         public async Task<Usuario> IdentityUserAsync(string token)
         {
-            token = token.Substring(token.Length-60,60);
+            token = token.Substring(token.Length - 60, 60);
 
-            return  await _loginRepository.GetByIdentityAsync(token);
-            
+            return await _loginRepository.GetByIdentityAsync(token);
         }
     }
 }

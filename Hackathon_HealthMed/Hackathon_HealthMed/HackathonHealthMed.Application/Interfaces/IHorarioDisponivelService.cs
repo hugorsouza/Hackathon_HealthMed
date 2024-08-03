@@ -11,7 +11,7 @@ namespace HackathonHealthMed.Application.Interfaces
 {
     public interface IHorarioDisponivelService
     {
-        Task<HorarioDisponivel> ObterHorariosPorMedicoAsync(int medicoId);
+        Task<IEnumerable<HorarioDisponivel>> ObterHorariosPorMedicoAsync(int medicoId);
         Task<bool> AdicionarHorarioAsync(HorarioDisponivelDto horarioDisponivel);
         Task AtualizarHorarioAsync(HorarioDisponivelDto horarioDisponivel);
         Task<bool> DeletarHorarioAsync(int id);

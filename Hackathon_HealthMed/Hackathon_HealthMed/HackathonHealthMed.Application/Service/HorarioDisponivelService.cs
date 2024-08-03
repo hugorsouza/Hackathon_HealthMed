@@ -21,9 +21,9 @@ namespace HackathonHealthMed.Application.Service
             _sendEmail = sendEmail;
         }
 
-        public async Task<HorarioDisponivel> ObterHorariosPorMedicoAsync(int medicoId)
+        public async Task<IEnumerable<HorarioDisponivel>> ObterHorariosPorMedicoAsync(int medicoId)
         {
-            return await _horarioDisponivelRepository.ObterPorMedicoAsync(medicoId);
+            return (IEnumerable<HorarioDisponivel>)await _horarioDisponivelRepository.ObterPorMedicoAsync(medicoId);
         }
 
         public async Task<bool> AdicionarHorarioAsync(HorarioDisponivelDto horarioDisponivelDto)
