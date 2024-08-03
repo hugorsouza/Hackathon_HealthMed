@@ -19,6 +19,8 @@ builder.Services.AddScoped<ILoginRepository, LoginRepository>();
 builder.Services.AddScoped<IPacienteService, PacienteService>();
 builder.Services.AddScoped<IPacienteRepository, PacienteRepository>();
 builder.Services.AddScoped<ISendEmail, SendEmail>();
+builder.Services.AddScoped<IHorarioDisponivelService, HackathonHealthMed.Application.Service.HorarioDisponivelService>();
+builder.Services.AddScoped<IHorarioDisponivelRepository, HorarioDisponivelRepository>();
 
 var app = builder.Build();
 

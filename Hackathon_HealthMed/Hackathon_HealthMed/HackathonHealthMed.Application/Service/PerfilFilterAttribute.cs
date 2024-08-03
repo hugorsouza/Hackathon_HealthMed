@@ -2,6 +2,7 @@
 using HackathonHealthMed.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace HackathonHealthMed.Application.Service
 {
@@ -14,26 +15,37 @@ namespace HackathonHealthMed.Application.Service
             _perfilEsperado = perfilEsperado;
         }
 
-        public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var token = context.HttpContext.Request.Headers["Token"].ToString();
-            var loginService = (ILoginService)context.HttpContext.RequestServices.GetService(typeof(ILoginService));
+            var token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
-            if (loginService == null)
-            {
-                context.Result = new StatusCodeResult(500);
-                return;
-            }
-
-            var user = await loginService.IdentityUserAsync(token);
-
-            if (user.perfil != _perfilEsperado)
+            if (string.IsNullOrEmpty(token))
             {
                 context.Result = new UnauthorizedResult();
                 return;
             }
 
-            await next();
+            try
+            {
+                var jwtToken = new JwtSecurityTokenHandler().ReadJwtToken(token);
+                var perfilClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "perfil");
+
+                if (perfilClaim == null || !Enum.TryParse(perfilClaim.Value, out EPerfil perfilUsuario))
+                {
+                    context.Result = new UnauthorizedResult();
+                    return;
+                }
+
+                if (perfilUsuario != _perfilRequerido)
+                {
+                    context.Result = new ForbidResult();
+                    return;
+                }
+            }
+            catch (Exception)
+            {
+                context.Result = new UnauthorizedResult();
+            }
         }
     }
 
