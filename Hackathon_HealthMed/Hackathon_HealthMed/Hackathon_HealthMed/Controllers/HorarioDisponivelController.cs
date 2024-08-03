@@ -40,6 +40,7 @@ namespace Hackathon_HealthMed.Controllers
         [HttpPost("AdicionarHorario")]
         public async Task<IActionResult> AdicionarHorario([FromBody] HorarioDisponivelDto horarioDisponivelDto, string token)
         {
+
             var user = await _loginService.IdentityUserAsync(token);
             if (user == null || user.perfil != EPerfil.Medico) // Verifica se o usuário é nulo ou não é paciente
             {
