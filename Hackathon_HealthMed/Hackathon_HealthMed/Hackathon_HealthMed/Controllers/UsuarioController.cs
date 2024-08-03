@@ -32,8 +32,7 @@ namespace Hackathon_HealthMed.Controllers
                     return Ok(@$"Token: {token}"); // Implementar a geração do token aqui.
                 }
                 return Unauthorized(new { success = false, message = "Credenciais inválidas." });
-
-                
+                                
             }
             catch (Exception ex)
             {

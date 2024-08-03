@@ -13,10 +13,12 @@ namespace HackathonHealthMed.Application.Service
     public class HorarioDisponivelService : IHorarioDisponivelService
     {
         private readonly IHorarioDisponivelRepository _horarioDisponivelRepository;
+        private readonly ISendEmail _sendEmail;
 
-        public HorarioDisponivelService(IHorarioDisponivelRepository horarioDisponivelRepository)
+        public HorarioDisponivelService(IHorarioDisponivelRepository horarioDisponivelRepository, ISendEmail sendEmail)
         {
             _horarioDisponivelRepository = horarioDisponivelRepository;
+            _sendEmail = sendEmail;
         }
 
         public async Task<IEnumerable<HorarioDisponivel>> ObterHorariosPorMedicoAsync(int medicoId)
@@ -107,7 +109,11 @@ namespace HackathonHealthMed.Application.Service
                 Id = consultaDto.Id
             };
 
-            return await _horarioDisponivelRepository.AgendarConsultaAsync(consulta);
+            var result = await _horarioDisponivelRepository.AgendarConsultaAsync(consulta);
+            if (result == true)
+                await _sendEmail.Send((long)consultaDto.PacienteId, (long)consultaDto.MedicoId, consultaDto.Horario);
+
+            return result;
         }
 
         public async Task<bool> DesmarcarConsultaAsync(int id, int pacienteId)
